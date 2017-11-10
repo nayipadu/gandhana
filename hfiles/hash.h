@@ -4,14 +4,19 @@
 
 #include "common.h"
 
-typedef u_int32_t bucket_t;
+typedef int bucket_t;
 typedef voidp hashCookie;
 
 // Collision resolution is linked list.
+// - hash_function returns the index (or bucket) where we need to insert thekey
+// - compare fucntion compares 2 keys (note that key may be of any type, so,
+//   we need compare fucntion. compare retuens 1 when it matches and 0 if keys
+//   do not match
+// - dump_dunction dumps entire hash table
 hashCookie hash_init(bucket_t num_buckets,
-                bucket_t (*hash_function)(voidp, bucket_t),
-                bucket_t (*compare_function)(voidp, voidp),
-                void (*dump_function)(voidp, voidp, bucket_t index));
+                bucket_t (*hash_function)(voidp key, bucket_t num_buckets),
+                int (*compare_function)(voidp key, voidp comparewith),
+                void (*dump_function)(voidp key, voidp value));
 
 /*
  *  0 : success
@@ -19,16 +24,16 @@ hashCookie hash_init(bucket_t num_buckets,
  *  1 : Key already exists
  */
 int
-hash_insert(hashCookie handler, voidp key, voidp data);
+hash_insert(hashCookie cookie, voidp key, voidp data);
 
 void
-hash_remove(hashCookie handler, voidp key);
+hash_remove(hashCookie cookie, voidp key);
 
 voidp
-hash_lookup(hashCookie handler, voidp key);
+hash_lookup(hashCookie cookie, voidp key);
 
-bool
-hashtable_dump(hashCookie handler);
+void
+hashtable_dump(hashCookie cookie);
 
 #endif
 
