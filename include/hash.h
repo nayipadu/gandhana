@@ -4,7 +4,7 @@
 
 #include "common.h"
 
-typedef int bucket_t;
+typedef unsint32_t bucket_t;
 typedef voidp hashCookie;
 
 // Collision resolution is linked list.
