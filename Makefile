@@ -1,4 +1,7 @@
+ifndef SRC
 SRC := src
+endif
+
 TEST_DIR := unittest
 
 TARGET_LIB := libtarget.so
@@ -15,7 +18,8 @@ LIB_CFLAGS := -shared
 CFLAGS := -Wall -Werror -fpic
 CFLAGS += -g
 
-all: $(TARGET_LIB) unittest
+#all: $(TARGET_LIB) unittest
+all: $(TARGET_LIB)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
