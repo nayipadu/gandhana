@@ -55,7 +55,7 @@ ll_insert( llnode **head, llnode *node)
 
 // #### LL fucntions end here
 
-static int
+static voidp
 hash_find_lookup_in_bucket(hash_t *handler, bucket_t index, voidp key)
 {
    llnode *node;
@@ -64,7 +64,7 @@ hash_find_lookup_in_bucket(hash_t *handler, bucket_t index, voidp key)
    SLL_FOREACH(handler->hashtable[index], node) {
       if(!handler->compare_function(node->key, key))
          continue;
-      return 1; // key exists
+      return node->value; // key exists
    }
    return 0; // key does not exist
 }
@@ -86,6 +86,20 @@ hashtable_dump(hashCookie cookie)
    trace("\n");
 }
 
+voidp
+hash_lookup(hashCookie cookie, voidp key)
+{
+   hash_t *handler = (hash_t *) cookie;
+   bucket_t buc_num;
+   voidp value;
+    
+   buc_num = handler->hash_function( key, handler->num_buckets );
+   trace("bucket number is: %lu\n", buc_num);
+
+   value = hash_find_lookup_in_bucket(handler, buc_num, key);
+   return value;
+}
+
 int
 hash_insert(hashCookie cookie, voidp key, voidp value)
 {
@@ -94,16 +108,13 @@ hash_insert(hashCookie cookie, voidp key, voidp value)
    llnode *node;
 
    trace("Entering. value is %s\n", (char *)value);
-   buc_num = handler->hash_function( key, handler->num_buckets );
-   trace("bucket number is: %lu\n", buc_num);
-
-   if(hash_find_lookup_in_bucket(handler, buc_num, key)) {
-      // key already in hashtable
+   if (!hash_lookup(cookie, key)) {
       // TODO: this is the default behavior right? duplicates are detected ?
-      trace("duplicate key\n");
-      return 1;
+      return 1; // duplicate entry
    }
 
+   //TODO: Need optimization. buc_num obtained while lookup, use it
+   buc_num = handler->hash_function( key, handler->num_buckets );
    trace("create a new node to insert");
    /* Insert node in this bucket */
    node = ll_newnode(key, value);
@@ -126,7 +137,6 @@ def_comparefunction(voidp key, voidp comparewith)
 static bucket_t
 def_hashfunction(voidp key, bucket_t num_buckets)
 {
-   trace("inside hash fucntion\n");
    return ((unsint32_t)key) % num_buckets; 
 }
 

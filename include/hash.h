@@ -29,6 +29,10 @@ hash_insert(hashCookie cookie, voidp key, voidp data);
 void
 hash_remove(hashCookie cookie, voidp key);
 
+/*
+ *  0 : failure
+ *  value: on success
+ */
 voidp
 hash_lookup(hashCookie cookie, voidp key);
 
