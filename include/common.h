@@ -8,5 +8,7 @@ typedef unsigned char u_int8_t;
 
 typedef void * voidp;
 
+typedef unsigned int uint;
+
 #endif // HFILES_COMMON_H
 

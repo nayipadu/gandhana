@@ -10,8 +10,11 @@ typedef voidp hashCookie;
 // Collision resolution is linked list.
 // - hash_function returns the index (or bucket) where we need to insert thekey
 // - compare fucntion compares 2 keys (note that key may be of any type, so,
-//   we need compare fucntion. compare retuens 1 when it matches and 0 if keys
-//   do not match
+//   we need compare fucntion. 
+//   return value:
+//   	0 - if equal
+//   	1 - if key > comparewith
+//   	-1 - if key < comparewith
 // - dump_dunction dumps entire hash table
 hashCookie hash_init(bucket_t num_buckets,
                 bucket_t (*hash_function)(voidp key, bucket_t num_buckets),

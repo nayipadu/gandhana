@@ -12,7 +12,7 @@ OBJS := $(SRCS:%.c=%.o)
 TEST_SRCS := $(wildcard $(TEST_DIR)/*.c)
 TEST_OBJS := $(TEST_SRCS:%.c=%.o)
 
-INCLUDES := -Iinlcude
+INCLUDES := -Iinclude
 
 LIB_CFLAGS := -shared
 CFLAGS := -Wall -Werror -fpic
@@ -25,7 +25,7 @@ all: $(TARGET_LIB)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(TARGET_LIB): $(OBJS)
-	$(CC) $(LIB_FLAGS) -o $@ $< 
+	$(CC) $(LIB_CFLAGS) -o $@ $^ 
 
 $(TEST_OBJ)/%.o: $(TEST_DIR)/%.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
